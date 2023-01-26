@@ -44,17 +44,20 @@ if (Menu.Where(i => i.ID == choice).Count() == 1)
         Console.WriteLine($"How many {SelectItem.Name} would you like to order?");
         int quantity = int.Parse(Console.ReadLine());
 
-        for (int q = 0; q <= quantity; q++)
+        for (int q = 1; q <= quantity; q++)
         {
             cart.Add(SelectItem);
         }
     }
-    
+    else if(multipleChoice == "n")
+    {
+        cart.Add(SelectItem);
+    }
 }
 
 foreach (Item c in cart)
 {
-    Console.WriteLine($"{c.Name}");
+    Console.WriteLine($"{c.Name} price: {c.Price}");
 }
 
 
