@@ -28,37 +28,75 @@ Console.WriteLine("Welcome to Grand Circus Cafe! Home to the 'Nectar of the Codi
 
 Console.WriteLine();
 
-//Displays Menu
-DisplayMenu(Menu);
+
 Console.Write("Here is our Menu, please select a number: ");
 
-//User Input
-int choice = int.Parse(Console.ReadLine());
-if (Menu.Where(i => i.ID == choice).Count() == 1)
-{
-    Item SelectItem = Menu.First(i => i.ID == choice);
-    Console.Write($"You selected {SelectItem.Name}, would you like to order more than one? (y/n): ");
-    string multipleChoice = Console.ReadLine();
-    if (multipleChoice == "y")
-    {
-        Console.WriteLine($"How many {SelectItem.Name} would you like to order?");
-        int quantity = int.Parse(Console.ReadLine());
+bool runProgram = true;
 
-        for (int q = 1; q <= quantity; q++)
+//User Input
+do
+{
+
+        DisplayMenu(Menu);
+
+    int choice = int.Parse(Console.ReadLine());
+    if (Menu.Where(i => i.ID == choice).Count() == 1)
+    {
+        Item SelectItem = Menu.First(i => i.ID == choice);
+        Console.Write($"You selected {SelectItem.Name}, would you like to order more than one? (y/n): ");
+        string multipleChoice = Console.ReadLine();
+        if (multipleChoice == "y")
+        {
+            Console.WriteLine($"How many {SelectItem.Name} would you like to order?");
+            int quantity = int.Parse(Console.ReadLine());
+
+            for (int q = 1; q <= quantity; q++)
+            {
+                cart.Add(SelectItem);
+            }
+        }
+        else if (multipleChoice == "n")
         {
             cart.Add(SelectItem);
         }
+        else
+        {
+            Console.WriteLine("Please respond with a \"y\" or a \"n\"");
+            Console.ReadLine();
+        }
+        Console.WriteLine($"{SelectItem.Name} has been added to your cart.  Would you like to add anything else to your order? (y/n)");
+        string cont = Console.ReadLine().ToLower().Trim();
+        if(cont == "y")
+        {
+            runProgram = true;
+        }
+        else if(cont == "n")
+        {
+            runProgram = false;
+            break;
+        }
+        else
+        {
+            Console.WriteLine("Please respond with a \"y\" or a \"n\"");
+            Console.ReadLine();
+        }
+
     }
-    else if(multipleChoice == "n")
-    {
-        cart.Add(SelectItem);
-    }
-}
+} while (runProgram=true);
+
+
+
+
+decimal subTotal = 0;
+
 
 foreach (Item c in cart)
 {
-    Console.WriteLine($"{c.Name} price: {c.Price}");
+    Console.WriteLine(c.Name);
+    subTotal = subTotal + c.Price;
 }
+Console.WriteLine(subTotal);
+
 
 
 
