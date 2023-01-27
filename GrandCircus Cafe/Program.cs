@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics.Metrics;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 List<Item> Menu = new List<Item>()
@@ -108,6 +109,61 @@ while (restart)
         }
 
     } while (runProgram == true);
+
+    //Visa: ^4[0-9]{12}(?:[0-9]{3})?$
+    Console.WriteLine("How would you like to pay? Cash, Credit, or Check?");
+    string paymentMethod = Console.ReadLine().ToLower().Trim();
+
+    switch (paymentMethod)
+    {
+        case ("cash"):
+        {
+            break;
+        }
+        case ("credit"):
+        {
+                while (true)
+                {
+                    Console.WriteLine("Please type in your Credit Card number");
+                    string ccNumber = Console.ReadLine();
+
+                    if (Regex.IsMatch(ccNumber, "^4[0-9]{12}(?:[0-9]{3})?$"))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: Please try again.");
+                    }
+                }
+                while (true)
+                {
+                    Console.WriteLine("Enter Exp Date:");
+                    string ccExp = Console.ReadLine();
+
+                }
+                while (true)
+                {
+
+                }
+            Console.WriteLine("Enter CVV");
+            string cvv = Console.ReadLine();
+
+
+            //Add validation 
+            break;
+        }
+        case ("check"):
+        {
+            break;
+        }
+
+    }
+
+    if (Regex.IsMatch("input", "comparator"))
+    {
+
+    }
 
     decimal SubTotal = 0;
     decimal Tax = 0;
