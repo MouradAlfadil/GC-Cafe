@@ -114,10 +114,13 @@ while (restart)
     Console.WriteLine("How would you like to pay? Cash, Credit, or Check?");
     string paymentMethod = Console.ReadLine().ToLower().Trim();
 
+    decimal cashTender = 0m;
     switch (paymentMethod)
     {
         case ("cash"):
         {
+                Console.WriteLine("Please enter the amount of cash provided:");
+                cashTender = decimal.Parse(Console.ReadLine());
             break;
         }
         case ("credit"):
@@ -138,16 +141,35 @@ while (restart)
                 }
                 while (true)
                 {
-                    Console.WriteLine("Enter Exp Date:");
+
+                    Console.WriteLine("Enter Exp Date: (MM/YYYY)");
                     string ccExp = Console.ReadLine();
 
+                    if (Regex.IsMatch(ccExp, "(0[1-9]|10|11|12)/20[0-9]{2}$"))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: Please try again.");
+                    }
                 }
                 while (true)
                 {
+                      Console.WriteLine("Enter CVV");
+                        string cvv = Console.ReadLine();
 
+                    if (Regex.IsMatch(cvv, "^[0-9]{3}$")|| Regex.IsMatch(cvv, "^[0-9]{4}$"))
+                    {
+                        break;
+                    }
+                   
+                    else
+                    {
+                        Console.WriteLine("Error: Please try again.");
+                    }
                 }
-            Console.WriteLine("Enter CVV");
-            string cvv = Console.ReadLine();
+          
 
 
             //Add validation 
@@ -155,15 +177,37 @@ while (restart)
         }
         case ("check"):
         {
-            break;
+                while (true)
+                {
+
+                    Console.WriteLine("Please enter check number:");
+                    string checkNumber = Console.ReadLine();
+                    if (Regex.IsMatch(checkNumber, "^[0-9]{4}$"))
+                    {
+                        Console.WriteLine("Here is a pen, please sign the bottom:");
+                        Console.ReadLine();
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("This check is VOID; give me money");
+                    }
+                }
+                break;
         }
+        default:
+            {
+                Console.WriteLine("You have you no money, go wash dishes");
+                break;
+            }
+        
 
     }
 
-    if (Regex.IsMatch("input", "comparator"))
-    {
+    //if (Regex.IsMatch("input", "comparator"))
+    //{
 
-    }
+    //}
 
     decimal SubTotal = 0;
     decimal Tax = 0;
@@ -192,7 +236,10 @@ while (restart)
 
     Console.WriteLine("========================================");
     Console.WriteLine($"Subtotal:{Decimal.Round(SubTotal, 2)} Tax:{Decimal.Round(Tax, 2)} Grand Total: {Decimal.Round(GrandTotal, 2)}");
-
+    if(paymentMethod== "cash")
+    {
+        Console.WriteLine($"${Decimal.Round(cashTender-GrandTotal, 2)} is your change");
+    }
 
     Console.WriteLine();
     exitProgram(ref restart);
