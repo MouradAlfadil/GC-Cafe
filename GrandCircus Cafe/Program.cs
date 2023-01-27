@@ -30,7 +30,6 @@ Console.WriteLine();
 
 
 Console.Write("Here is our Menu, please select a number: ");
-
 bool runProgram = true;
 
 //User Input
@@ -38,32 +37,39 @@ do
 {
 
         DisplayMenu(Menu);
-
+    //EXCEPTION NEEDED HERE
     int choice = int.Parse(Console.ReadLine());
     if (Menu.Where(i => i.ID == choice).Count() == 1)
     {
         Item SelectItem = Menu.First(i => i.ID == choice);
         Console.Write($"You selected {SelectItem.Name}, would you like to order more than one? (y/n): ");
-        string multipleChoice = Console.ReadLine();
-        if (multipleChoice == "y")
+        while (true)
         {
-            Console.WriteLine($"How many {SelectItem.Name} would you like to order?");
-            int quantity = int.Parse(Console.ReadLine());
+            string multipleChoice = Console.ReadLine();
+            if (multipleChoice == "y")
+            {
+                Console.WriteLine($"How many {SelectItem.Name} would you like to order?");
+                //EXCEPTION NEEDED HERE
+                int quantity = int.Parse(Console.ReadLine());
 
-            for (int q = 1; q <= quantity; q++)
+                for (int q = 1; q <= quantity; q++)
+                {
+                    cart.Add(SelectItem);
+                }
+                break;
+            }
+            else if (multipleChoice == "n")
             {
                 cart.Add(SelectItem);
+                break;
             }
+            else
+            {
+                Console.WriteLine("Please respond with a \"y\" or a \"n\"");
+            }
+
         }
-        else if (multipleChoice == "n")
-        {
-            cart.Add(SelectItem);
-        }
-        else
-        {
-            Console.WriteLine("Please respond with a \"y\" or a \"n\"");
-            Console.ReadLine();
-        }
+
         Console.WriteLine($"{SelectItem.Name} has been added to your cart.  Would you like to add anything else to your order? (y/n)");
         string cont = Console.ReadLine().ToLower().Trim();
         if(cont == "y")
@@ -87,15 +93,90 @@ do
 
 
 
-decimal subTotal = 0;
+decimal SubTotal = 0;
+decimal Tax = 0;
+decimal GrandTotal = 0;
 
 
-foreach (Item c in cart)
+
+Console.WriteLine("Receipt");
+Console.WriteLine("========================================");
+Console.WriteLine(string.Format("{0,-5} {1,-25} {2,0}", "Quantity", "Name", "Price"));
+
+List<Item> DistinctCategories = cart.GroupBy(dc => dc.ID).Select(dc => dc.First()).ToList();
+
+int num = 1;
+
+
+foreach (Item c in DistinctCategories)
 {
-    Console.WriteLine(c.Name);
-    subTotal = subTotal + c.Price;
+    num = cart.Where(i => i.ID == c.ID).Count();
+    Console.WriteLine(string.Format("{0,-5} {1,-25} ${2,0}", num, c.Name, ( c.Price* num)));
+//    Console.WriteLine($"Quantity: {num} {c.Name}   \t${c.Price * num}");
+    SubTotal = SubTotal + (c.Price * num);
 }
-Console.WriteLine(subTotal);
+
+
+
+
+
+
+
+
+
+
+
+Tax = 0.06m * SubTotal;
+GrandTotal = SubTotal+Tax;
+
+//foreach (Item it in cart.OrderByDescending(it => Menu[it]))
+//{
+
+//    SubTotal += cart[it];
+//    //9:25
+//    Console.WriteLine();
+//    Console.WriteLine($"Your total cost is ${GrandTotal}.");
+//}
+Console.WriteLine("========================================");
+Console.WriteLine($"Subtotal:{Decimal.Round(SubTotal, 2)} Tax:{Decimal.Round(Tax, 2)} Grand Total: {Decimal.Round(GrandTotal, 2)}");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
