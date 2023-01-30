@@ -18,9 +18,9 @@ List<Item> Menu = new List<Item>()
     new Item("Food", "Blueberry Muffin", "Freshly Baked Muffins", 2.99m),
     new Item("Food", "Cream Cheese Bagel", "Bagel + Cheez", 4.99m),
     new Item("Drink", "Chai", "Freshly brewed spiced tea", 4.99m),
-    new Item("Food", "COOKIE", "Defiently not from Subway", 2.00m),
+    new Item("Food", "COOKIE", "Definitely not from Subway", 2.00m),
     new Item("Drink", "Matcha", "Green matcha", 2.50m),
-    new Item("Drink", "Baja Blast", "Nectar of the coding gods", 0.00m)
+    new Item("Drink", "Baja Blast", "Nectar of the Coding Gods", 0.00m)
 };
 
 List<Item> cart = new List<Item>();
@@ -46,7 +46,14 @@ while (restart)
                 Console.WriteLine("Here is our Menu, please select a number: ");
                 //User Input
                 choice = int.Parse(Console.ReadLine());
-                break;
+                if (choice > Menu.Count)
+                {
+                    Console.WriteLine($"The Choice you entered does not exist please input a value between 1-{Menu.Count}");
+                }
+                else
+                {
+                    break;
+                }
             }
             catch (Exception)
             {
@@ -59,28 +66,35 @@ while (restart)
             Console.Write($"You selected {SelectItem.Name}, would you like to order more than one? (y/n): ");
             while (true)
             {
-                string multipleChoice = Console.ReadLine();
-                if (multipleChoice == "y")
+                string multipleChoice = Console.ReadLine().Trim().ToLower();
+                try
                 {
-                    Console.WriteLine($"How many {SelectItem.Name} would you like to order?");
-                    //EXCEPTION NEEDED HERE
-                    int quantity = int.Parse(Console.ReadLine());
+                    if (multipleChoice == "y")
+                    {
+                        Console.WriteLine($"How many {SelectItem.Name}s would you like to order?");
+                        int quantity = int.Parse(Console.ReadLine());
 
-                    for (int q = 1; q <= quantity; q++)
+                        for (int q = 1; q <= quantity; q++)
+                        {
+                            cart.Add(SelectItem);
+                        }
+                        break;
+                    }
+                    else if (multipleChoice == "n")
                     {
                         cart.Add(SelectItem);
+                        break;
                     }
-                    break;
+                    else
+                    {
+                        //Console.WriteLine("Please respond with a \"y\" or a \"n\"");
+                    }
                 }
-                else if (multipleChoice == "n")
+                catch(Exception)
                 {
-                    cart.Add(SelectItem);
-                    break;
+                    Console.WriteLine("Please enter valid input.");
                 }
-                else
-                {
-                    Console.WriteLine("Please respond with a \"y\" or a \"n\"");
-                }
+
             }
 
             Console.WriteLine();
@@ -110,6 +124,27 @@ while (restart)
 
     } while (runProgram == true);
 
+    decimal SubTotal = 0;
+    decimal Tax = 0;
+    decimal GrandTotal = 0;
+    int num = 1;
+
+    List<Item> DistinctCategories = cart.GroupBy(dc => dc.ID).Select(dc => dc.First()).ToList();
+
+    foreach (Item c in DistinctCategories)
+    {
+        num = cart.Where(i => i.ID == c.ID).Count();
+        Console.WriteLine(string.Format("{0,-5} {1,-25} ${2,0}", num, c.Name, (c.Price * num)));
+        //    Console.WriteLine($"Quantity: {num} {c.Name}   \t${c.Price * num}");
+        SubTotal = SubTotal + (c.Price * num);
+    }
+
+
+    Tax = 0.06m * SubTotal;
+    GrandTotal = SubTotal + Tax;
+    //DISPLAYBILL
+    Console.WriteLine($"BILL");
+    Console.WriteLine($"Subtotal:${Decimal.Round(SubTotal, 2)} Tax:${Decimal.Round(Tax, 2)} Total:${Decimal.Round(GrandTotal, 2)}");
     //Visa: ^4[0-9]{12}(?:[0-9]{3})?$
     Console.WriteLine("How would you like to pay? Cash, Credit, or Check?");
     string paymentMethod = Console.ReadLine().ToLower().Trim();
@@ -119,6 +154,7 @@ while (restart)
     {
         case ("cash"):
         {
+                /////////////CASH VALIDATION NEEDED
                 Console.WriteLine("Please enter the amount of cash provided:");
                 cashTender = decimal.Parse(Console.ReadLine());
             break;
@@ -204,35 +240,16 @@ while (restart)
 
     }
 
-    //if (Regex.IsMatch("input", "comparator"))
-    //{
 
-    //}
 
-    decimal SubTotal = 0;
-    decimal Tax = 0;
-    decimal GrandTotal = 0;
 
     Console.WriteLine("Receipt");
     Console.WriteLine("========================================");
     Console.WriteLine(string.Format("{0,-5} {1,-25} {2,0}", "Quantity", "Name", "Price"));
 
-    List<Item> DistinctCategories = cart.GroupBy(dc => dc.ID).Select(dc => dc.First()).ToList();
-
-    int num = 1;
 
 
-    foreach (Item c in DistinctCategories)
-    {
-        num = cart.Where(i => i.ID == c.ID).Count();
-        Console.WriteLine(string.Format("{0,-5} {1,-25} ${2,0}", num, c.Name, (c.Price * num)));
-        //    Console.WriteLine($"Quantity: {num} {c.Name}   \t${c.Price * num}");
-        SubTotal = SubTotal + (c.Price * num);
-    }
 
-
-    Tax = 0.06m * SubTotal;
-    GrandTotal = SubTotal + Tax;
 
     Console.WriteLine("========================================");
     Console.WriteLine($"Subtotal:{Decimal.Round(SubTotal, 2)} Tax:{Decimal.Round(Tax, 2)} Grand Total: {Decimal.Round(GrandTotal, 2)}");
@@ -262,6 +279,7 @@ static void DisplayMenu(List<Item> AllItems)
     {
         i.ID = counter;
         Console.WriteLine($"{i.ID}: {i.Name}");
+        Console.WriteLine($"\t{i.Description}");
         counter++;
     }
     Console.WriteLine("");
@@ -271,6 +289,7 @@ static void DisplayMenu(List<Item> AllItems)
     {
         i.ID = counter;
         Console.WriteLine($"{i.ID}: {i.Name}");
+        Console.WriteLine($"\t{i.Description}");
         counter++;
     }
 }
