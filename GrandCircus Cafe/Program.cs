@@ -27,6 +27,7 @@ List<Item> cart = new List<Item>();
 
 Console.WriteLine("Welcome to Grand Circus Cafe! Home to the 'Nectar of the Coding Gods'.\n");
 
+//Restart Entire Program
 bool restart = true;
 while (restart)
 {
@@ -40,8 +41,8 @@ while (restart)
         {
             try
             {
-                Console.Write("Please select an item number: ");
                 //User Input
+                Console.Write("Please select an item number: ");
                 choice = int.Parse(Console.ReadLine());
                 if (choice > Menu.Count)
                 {
@@ -52,6 +53,7 @@ while (restart)
                     break;
                 }
             }
+
             catch (Exception)
             {
                 Console.WriteLine("Please enter valid input.");
@@ -86,15 +88,14 @@ while (restart)
                     {
                     }
                 }
+
                 catch(Exception)
                 {
                     Console.WriteLine("Please enter valid input.");
                 }
-
             }
 
             Console.Write($"{SelectItem.Name} has been added to your cart.  Would you like to add anything else to your order? (y/n): ");
-
             while (true)
             {
                 string cont = Console.ReadLine().ToLower().Trim();
@@ -134,9 +135,7 @@ while (restart)
                     Console.WriteLine("Please respond with a \"y\" or a \"n\"");
                 }
             }
-
             Console.WriteLine();
-
         }
 
     } while (runProgram == true);
@@ -152,13 +151,14 @@ while (restart)
     {
         num = cart.Where(i => i.ID == c.ID).Count();
         Console.WriteLine(string.Format("{0,-5} {1,-25} ${2,0}", num, c.Name, (c.Price * num)));
-        //    Console.WriteLine($"Quantity: {num} {c.Name}   \t${c.Price * num}");
+
         SubTotal = SubTotal + (c.Price * num);
     }
 
     Tax = 0.06m * SubTotal;
     GrandTotal = SubTotal + Tax;
-    //DISPLAYBILL
+
+    //Display Bill
     Console.WriteLine($"BILL");
     Console.WriteLine($"Subtotal:${Decimal.Round(SubTotal, 2)} Tax:${Decimal.Round(Tax, 2)} Total:${Decimal.Round(GrandTotal, 2)}\n");
 
@@ -178,6 +178,8 @@ while (restart)
     }
 
     decimal cashTender = 0m;
+
+    //Accepting payment
     switch (paymentMethod)
     {
         case ("cash"):
@@ -198,6 +200,7 @@ while (restart)
                 }
                 break;
         }
+
         case ("credit"):
         {
                 while (true)
@@ -231,30 +234,25 @@ while (restart)
                 }
                 while (true)
                 {
-                      Console.WriteLine("Enter CVV");
-                        string cvv = Console.ReadLine();
+                    Console.WriteLine("Enter CVV");
+                    string cvv = Console.ReadLine();
 
                     if (Regex.IsMatch(cvv, "^[0-9]{3}$")|| Regex.IsMatch(cvv, "^[0-9]{4}$"))
                     {
                         break;
                     }
-                   
                     else
                     {
                         Console.WriteLine("Error: Please try again.");
                     }
                 }
-          
-
-
-            //Add validation 
-            break;
+                break;
         }
+
         case ("check"):
         {
                 while (true)
                 {
-
                     Console.WriteLine("Please enter check number:");
                     string checkNumber = Console.ReadLine();
                     if (Regex.IsMatch(checkNumber, "^[0-9]{4}$"))
@@ -270,25 +268,18 @@ while (restart)
                 }
                 break;
         }
+
         default:
             {
                 Console.WriteLine("You have you no money, go wash dishes");
                 break;
             }
-        
-
     }
 
-
-
-
+    //Display Receipt
     Console.WriteLine("Receipt");
     Console.WriteLine("========================================");
     Console.WriteLine(string.Format("{0,-5} {1,-25} {2,0}", "Quantity", "Name", "Price"));
-
-
-
-
 
     Console.WriteLine("========================================");
     Console.WriteLine($"Subtotal:{Decimal.Round(SubTotal, 2)} Tax:{Decimal.Round(Tax, 2)} Grand Total: {Decimal.Round(GrandTotal, 2)}");
@@ -302,10 +293,6 @@ while (restart)
 }
 
 Console.WriteLine("Thank you and have a wonderful day!");
-
-
-
-
 
 
 //Methods
