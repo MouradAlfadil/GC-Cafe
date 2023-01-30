@@ -1,0 +1,17 @@
+Drink|Cappuccino|Espresso with milk|3.99
+Drink|Affogato|Espresso with Ice Cream|4.99
+Drink|Iced Pistachio latte|Pistachio, Milk and Espresso|4.99
+Drink|Americano|Espresso and Water|3.99
+Drink|While Chocolate Mocha|Coffee, White Chocolate, Milk and Espresso|5.99
+Food|Chocolate Croissant|Buttery Flaky pastry with chocolate filling|3.50
+Food|Ham and Cheese Croissant|Buttery Flaky pastry with Ham and Cheddar|5.00
+Drink|Redeye|Brewed Coffee with a shot of Espresso|3.99
+Food|Blueberry Muffin|Freshly Baked Muffins|2.99
+Food|Cream Cheese Bagel|Bagel + Cheez|4.99
+Drink|Chai|Freshly brewed spiced tea|4.99
+Food|COOKIE|Definitely not from Subway|2.00
+Drink|Matcha|Green matcha|2.50
+Drink|Baja Blast|Nectar of the Coding Gods|0.00
+food|Pizza|dough and pepperoni|5
+drink|boba tea|tea with tapioca|95
+food|toast|bread|6

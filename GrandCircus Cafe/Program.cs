@@ -5,23 +5,24 @@ using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-List<Item> Menu = new List<Item>()
-{
-    new Item("Drink", "Cappuccino", "Espresso with milk", 3.99m),
-    new Item("Drink", "Affogato", "Espresso with Ice Cream", 4.99m),
-    new Item("Drink", "Iced Pistachio latte", "Pistachio, Milk and Espresso", 4.99m),
-    new Item("Drink", "Americano", "Espresso and Water", 3.99m),
-    new Item("Drink", "While Chocolate Mocha", "Coffee, White Chocolate, Milk, and Espresso", 5.99m),
-    new Item("Food", "Chocolate Croissant", "Buttery Flaky pastry with chocolate filling", 3.50m),
-    new Item("Food", "Ham and Cheese Croissant", "Buttery Flaky pastry with Ham and Cheddar", 5.00m),
-    new Item("Drink", "Redeye", "Brewed Coffee with a shot of Espresso", 3.99m),
-    new Item("Food", "Blueberry Muffin", "Freshly Baked Muffins", 2.99m),
-    new Item("Food", "Cream Cheese Bagel", "Bagel + Cheez", 4.99m),
-    new Item("Drink", "Chai", "Freshly brewed spiced tea", 4.99m),
-    new Item("Food", "COOKIE", "Definitely not from Subway", 2.00m),
-    new Item("Drink", "Matcha", "Green matcha", 2.50m),
-    new Item("Drink", "Baja Blast", "Nectar of the Coding Gods", 0.00m)
-};
+List<Item> Menu = ProductList.MenuFile();
+//List<Item> Menu = new List<Item>()
+//{
+//    new Item("Drink", "Cappuccino", "Espresso with milk", 3.99m),
+//    new Item("Drink", "Affogato", "Espresso with Ice Cream", 4.99m),
+//    new Item("Drink", "Iced Pistachio latte", "Pistachio, Milk and Espresso", 4.99m),
+//    new Item("Drink", "Americano", "Espresso and Water", 3.99m),
+//    new Item("Drink", "While Chocolate Mocha", "Coffee, White Chocolate, Milk, and Espresso", 5.99m),
+//    new Item("Food", "Chocolate Croissant", "Buttery Flaky pastry with chocolate filling", 3.50m),
+//    new Item("Food", "Ham and Cheese Croissant", "Buttery Flaky pastry with Ham and Cheddar", 5.00m),
+//    new Item("Drink", "Redeye", "Brewed Coffee with a shot of Espresso", 3.99m),
+//    new Item("Food", "Blueberry Muffin", "Freshly Baked Muffins", 2.99m),
+//    new Item("Food", "Cream Cheese Bagel", "Bagel + Cheez", 4.99m),
+//    new Item("Drink", "Chai", "Freshly brewed spiced tea", 4.99m),
+//    new Item("Food", "COOKIE", "Definitely not from Subway", 2.00m),
+//    new Item("Drink", "Matcha", "Green matcha", 2.50m),
+//    new Item("Drink", "Baja Blast", "Nectar of the Coding Gods", 0.00m)
+//};
 
 List<Item> cart = new List<Item>();
 
@@ -289,10 +290,81 @@ while (restart)
     }
 
     Console.WriteLine();
+
     exitProgram(ref restart);
 }
 
+Console.WriteLine();
+
+Console.Write("Any items you didn't see on the Menu? Would you like to add some (y/n): ");
+while (true)
+{
+    string AddItem = Console.ReadLine();
+    if (AddItem == "y")
+    {
+        //Create a new Item
+        Console.WriteLine("Please add the new Menu Item catagory. (food/drink)");
+        string catagory = Console.ReadLine().ToLower().Trim();
+        while (true)
+        {
+            if (catagory == "food" || catagory == "drink")
+            {
+                break;
+            }
+            else
+            {
+                Console.Write("Invalid Entry, please enter (food/drink): ");
+                catagory = Console.ReadLine().ToLower().Trim();
+            }
+        }
+        Console.WriteLine("Please add Menu Item Name.");
+        string name = Console.ReadLine().ToLower().Trim();
+
+        Console.WriteLine("Please add Menu Item description.");
+        string description = Console.ReadLine().ToLower().Trim();
+
+        Console.WriteLine("Please add Menu Item price");
+        decimal price = 0;
+        while (true)
+        {
+            try
+            {
+                price = decimal.Parse(Console.ReadLine());
+                if (price >= 0)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.Write("Invalid input, please enter positive value: ");
+                }
+            }
+            catch
+            {
+                Console.Write("Invalid input, please enter positive value: ");
+            }
+        }
+
+        Item newItem = new Item(catagory, name, description, price);
+        Menu.Add(newItem);
+
+        Console.Write("Would you like to add another item? (y/n): ");
+    }
+    else if (AddItem == "n")
+    {
+        break;
+    }
+    else
+    {
+        Console.Write("Invalid input, please enter (y/n): ");
+    }
+}
+
+Console.WriteLine();
+
 Console.WriteLine("Thank you and have a wonderful day!");
+
+ProductList.WriteMenu(Menu);
 
 
 //Methods
