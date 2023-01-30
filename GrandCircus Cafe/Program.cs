@@ -25,14 +25,11 @@ List<Item> Menu = new List<Item>()
 
 List<Item> cart = new List<Item>();
 
-Console.WriteLine("Welcome to Grand Circus Cafe! Home to the 'Nectar of the Coding Gods'.");
+Console.WriteLine("Welcome to Grand Circus Cafe! Home to the 'Nectar of the Coding Gods'.\n");
 
 bool restart = true;
 while (restart)
 {
-
-    Console.WriteLine();
-
     DisplayMenu(Menu);
 
     bool runProgram = true;
@@ -43,12 +40,12 @@ while (restart)
         {
             try
             {
-                Console.WriteLine("Here is our Menu, please select a number: ");
+                Console.Write("Please select an item number: ");
                 //User Input
                 choice = int.Parse(Console.ReadLine());
                 if (choice > Menu.Count)
                 {
-                    Console.WriteLine($"The Choice you entered does not exist please input a value between 1-{Menu.Count}");
+                    Console.WriteLine($"The Choice you entered does not exist please input a value between 1-{Menu.Count}.");
                 }
                 else
                 {
@@ -87,7 +84,6 @@ while (restart)
                     }
                     else
                     {
-                        //Console.WriteLine("Please respond with a \"y\" or a \"n\"");
                     }
                 }
                 catch(Exception)
@@ -97,8 +93,6 @@ while (restart)
 
             }
 
-            Console.WriteLine();
-
             Console.Write($"{SelectItem.Name} has been added to your cart.  Would you like to add anything else to your order? (y/n): ");
 
             while (true)
@@ -107,6 +101,26 @@ while (restart)
                 if (cont == "y")
                 {
                     runProgram = true;
+                    Console.Write("Would you like to see the Menu again? (y/n): ");
+                    string menuAgain = Console.ReadLine().ToLower().Trim();
+
+                    while (true)
+                    {
+                        if (menuAgain == "y")
+                        {
+                            DisplayMenu(Menu);
+                            break;
+                        }
+                        else if (menuAgain == "n")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.Write("Invalid input, please enter (y/n): ");
+                            menuAgain = Console.ReadLine().ToLower().Trim();
+                        }
+                    }
                     break;
                 }
                 else if (cont == "n")
@@ -120,6 +134,9 @@ while (restart)
                     Console.WriteLine("Please respond with a \"y\" or a \"n\"");
                 }
             }
+
+            Console.WriteLine();
+
         }
 
     } while (runProgram == true);
@@ -139,25 +156,47 @@ while (restart)
         SubTotal = SubTotal + (c.Price * num);
     }
 
-
     Tax = 0.06m * SubTotal;
     GrandTotal = SubTotal + Tax;
     //DISPLAYBILL
     Console.WriteLine($"BILL");
-    Console.WriteLine($"Subtotal:${Decimal.Round(SubTotal, 2)} Tax:${Decimal.Round(Tax, 2)} Total:${Decimal.Round(GrandTotal, 2)}");
-    //Visa: ^4[0-9]{12}(?:[0-9]{3})?$
-    Console.WriteLine("How would you like to pay? Cash, Credit, or Check?");
+    Console.WriteLine($"Subtotal:${Decimal.Round(SubTotal, 2)} Tax:${Decimal.Round(Tax, 2)} Total:${Decimal.Round(GrandTotal, 2)}\n");
+
+    Console.Write("How would you like to pay? Cash, Credit, or Check? ");
     string paymentMethod = Console.ReadLine().ToLower().Trim();
+    while (true)
+    {
+        if (paymentMethod != "cash" && paymentMethod != "credit" && paymentMethod != "check")
+        {
+            Console.WriteLine("You done fucked up, please enter valid payment method.");
+            paymentMethod = Console.ReadLine().ToLower().Trim();
+        }
+        else
+        {
+            break;
+        }
+    }
 
     decimal cashTender = 0m;
     switch (paymentMethod)
     {
         case ("cash"):
         {
-                /////////////CASH VALIDATION NEEDED
-                Console.WriteLine("Please enter the amount of cash provided:");
-                cashTender = decimal.Parse(Console.ReadLine());
-            break;
+                while (true)
+                {
+                    Console.Write("Please enter the amount of cash provided: ");
+                    cashTender = decimal.Parse(Console.ReadLine());
+
+                    if (cashTender >= GrandTotal)
+                    {
+                        break;
+                    }
+                    else if (cashTender < GrandTotal)
+                    {
+                        Console.WriteLine("Insufficient funds.");
+                    }
+                }
+                break;
         }
         case ("credit"):
         {
@@ -262,7 +301,7 @@ while (restart)
     exitProgram(ref restart);
 }
 
-Console.WriteLine("Goodbye!");
+Console.WriteLine("Thank you and have a wonderful day!");
 
 
 
@@ -292,6 +331,8 @@ static void DisplayMenu(List<Item> AllItems)
         Console.WriteLine($"\t{i.Description}");
         counter++;
     }
+
+    Console.WriteLine();
 }
 
 static void exitProgram(ref bool x)
