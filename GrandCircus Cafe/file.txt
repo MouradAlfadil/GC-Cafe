@@ -15,3 +15,4 @@ Drink|Baja Blast|Nectar of the Coding Gods|0.00
 food|Pizza|dough and pepperoni|5
 drink|boba tea|tea with tapioca|95
 food|toast|bread|6
+food|watermelon|water+melon|10

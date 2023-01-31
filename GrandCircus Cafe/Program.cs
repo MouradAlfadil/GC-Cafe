@@ -158,7 +158,7 @@ while (restart)
 
     Tax = 0.06m * SubTotal;
     GrandTotal = SubTotal + Tax;
-
+    
     //Display Bill
     Console.WriteLine($"BILL");
     Console.WriteLine($"Subtotal:${Decimal.Round(SubTotal, 2)} Tax:${Decimal.Round(Tax, 2)} Total:${Decimal.Round(GrandTotal, 2)}\n");
@@ -181,6 +181,7 @@ while (restart)
     decimal cashTender = 0m;
 
     //Accepting payment
+    //EXPLAIN THIS///////////////////////////////////////////////////////////////////////////////////////////////////////
     switch (paymentMethod)
     {
         case ("cash"):
@@ -276,12 +277,20 @@ while (restart)
                 break;
             }
     }
-
+    Console.WriteLine();
     //Display Receipt
     Console.WriteLine("Receipt");
+
+
     Console.WriteLine("========================================");
     Console.WriteLine(string.Format("{0,-5} {1,-25} {2,0}", "Quantity", "Name", "Price"));
+    foreach (Item c in DistinctCategories)
+    {
+        num = cart.Where(i => i.ID == c.ID).Count();
+        Console.WriteLine(string.Format("{0,-5} {1,-25} ${2,0}", num, c.Name, (c.Price * num)));
 
+        SubTotal = SubTotal + (c.Price * num);
+    }
     Console.WriteLine("========================================");
     Console.WriteLine($"Subtotal:{Decimal.Round(SubTotal, 2)} Tax:{Decimal.Round(Tax, 2)} Grand Total: {Decimal.Round(GrandTotal, 2)}");
     if(paymentMethod== "cash")
@@ -368,6 +377,7 @@ ProductList.WriteMenu(Menu);
 
 
 //Methods
+//EXPLAIN THIS//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static void DisplayMenu(List<Item> AllItems)
 {
     int counter = 1;
@@ -403,6 +413,7 @@ static void exitProgram(ref bool x)
 
         if (answer == "y")
         {
+            Console.Clear();
             break;
         }
         else if (answer == "n")
